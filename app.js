@@ -20,6 +20,13 @@ app.use(cors());
  * 
  */
 const port = process.env.PORT || 3000;
+/***
+ * 
+ * @variable Routes => 
+ * 
+ */
+app.use("/api", require("./routes"));
+
 
 /**
  * @Variable App => 

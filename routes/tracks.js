@@ -1,14 +1,16 @@
 /**
  * @variable express =>
  * @variable router =>
+ * @variable router =>
  */
 const express = require("express");
 const router = express.Router();
+const { getItems, getItem, createItem } = require("../controllers/tracks");
 
-router.get("/tracks", ( req, res  ) => {
-     const data = [" Hola "," mundo "];
-     res.send({data});
-});
+
+router.get("/", getItems);
+
+router.post("/",createItem);
 
 
 

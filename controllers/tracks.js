@@ -1,41 +1,26 @@
-/**
- * 
- */
-const { tracksModel } = require('../models');
+const { matchedData } = require("express-validator");
+const { tracksModel } = require("../models");
+const handleHttpError  = require("../utils/handleHttpError");
 
-/**
- * @variable   getItems:  => 
- * @param  {*} req  : 
- * @param  {*} resp : 
- * @variable   getItem:  =>
- * @param  {*} req  : 
- * @param  {*} resp : 
- * @variable   createItem:  => 
- * @param  {*} req  : 
- * @param  {*} resp : 
- * @variable   updateItem:  => 
- * @param  {*} req  : 
- * @param  {*} resp :
- * @variable   deletItem:  => 
- * @param  {*} req  : 
- * @param  {*} resp :
-*/
 const getItems = async ( req, res) => {
+    
     const data = await tracksModel.find({});
     res.send({data});
+
 };
 
 const getItem  = ( req, resp) => {
     const data = tracksModel.find({});
 };
 const createItem = async ( req, res ) => {
-    
-    const { body } = req;
-    console.log( " datos del body" ,  body  );
-    const data = await tracksModel.create( body );
-    res.send( { data });
-
-
+    try {
+        const body = matchedData(req);
+        const data = await tracksModel.create(body);
+        res.status(201);
+        res.send({ data });
+      } catch (e) {
+        handleHttpError(res, "ERROR_CREATE_ITEMS");
+      }
 };
 
 const updateItem = ( req, resp ) => {

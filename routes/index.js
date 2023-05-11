@@ -1,10 +1,4 @@
-/**
- * @variable express:
- * @variable fs:
- * @variable router:
- * @variable PATH_ROUTES:
- * @variable removeExtension:
- */
+
 const express = require("express");
 const fs = require("fs");
 const router = express.Router();

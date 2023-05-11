@@ -9,8 +9,20 @@ const getItems = async ( req, res) => {
 
 };
 
-const getItem  = ( req, resp) => {
-    const data = tracksModel.find({});
+const getItem  = async( req, res) => {
+
+    try 
+    { 
+      req = matchedData( req );   
+      const {id} = req;
+      const data = await tracksModel.findById(id);
+      res.send({ data });
+    } catch (e) {
+        handleHttpError( res, "ERROR_GET_ITEM")
+    }
+   
+
+
 };
 const createItem = async ( req, res ) => {
     try {
@@ -23,12 +35,31 @@ const createItem = async ( req, res ) => {
       }
 };
 
-const updateItem = ( req, resp ) => {
-    const data = tracksModel.find({});
+const updateItem = async ( req, res ) => {
+    try {
+        const {id, body} = matchedData( req );
+        const data = await tracksModel.findOneAndUpdate(
+            id, body
+         );
+        //res.status( 201 );
+        res.send({ data });
+      } catch (e) {
+        handleHttpError(res, "ERROR_UPDATE_ITEM");
+      }
 };
 
-const deletItem  = ( req, resp ) => {
-    const data = tracksModel.find({});
+const deletItem  = async ( req, res ) => {
+    try 
+    {
+    req = matchedData( req );   
+    const {id} = req;
+    const data = await tracksModel.deleteOne({_id: id});
+    res.send({ data });
+    } catch (e)
+    {
+        console.log(e);
+        handleHttpError( res, "ERROR_DELETE_ITEM");
+    }    
 };
 
 /**

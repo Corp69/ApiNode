@@ -2,7 +2,7 @@
  * @variable mongoose => 
  */
 const mongoose = require("mongoose");
-
+const mongooseDelete = require("mongoose-delete");
 /**
  *  @variable UserScheme => 
  */
@@ -32,6 +32,7 @@ const UserScheme = new mongoose.Schema(
     }
   );
 
+  UserScheme.plugin(mongooseDelete, { overrideMethods: "all"});
   module.exports = mongoose.model("users", UserScheme);
 
 

@@ -1,11 +1,6 @@
-/**
- * @variable mongoose => 
- */
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
-/**
- *  @variable UserScheme => 
- */
+
 const UserScheme = new mongoose.Schema(
     {
       name: {

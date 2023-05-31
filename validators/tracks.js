@@ -40,7 +40,6 @@ const validatorCreateItem = [
     }
 ];
 
-
 const validatorGetItem = [
     check("id")
     .exists()
@@ -92,6 +91,5 @@ const validatorUpdateItem = [
         return validateResults(req, res, next)
     }
 ];
-
 
 module.exports = { validatorCreateItem, validatorGetItem, validatorUpdateItem };

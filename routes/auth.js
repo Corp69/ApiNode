@@ -1,12 +1,8 @@
 const express = require("express");
-const { matchedData } = require("express-validator");
+const { registerCtrl} = require("../controllers/auth")
+const { validatorRegister } = require("../validators/auth");
+
 const router = express.Router();
-const { validatorLoginItem, validatorRegisterItem} =  require("../validators/auth");
-
-
-router.post("/register", validatorRegisterItem, (req, res) => {
-    req = matchedData( req );
-    res.send({ data:req });
-});
+router.post("/register", validatorRegister, registerCtrl);
 
 module.exports = router;

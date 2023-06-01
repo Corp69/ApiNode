@@ -1,19 +1,18 @@
 const { check } = require("express-validator");
-const validateResults = require("../utils/handleValidators")
+const validateResults = require("../utils/handleValidator")
 
-const validatorRegisterItem = [
+const validatorRegister = [
     check("name")
     .exists()
     .notEmpty()
-    .isLength({ min:3, max:30}),
+    .isLength({min:3, max:99}),
     check("age")
     .exists()
     .notEmpty()
     .isNumeric(),
     check("password")
     .exists()
-    .notEmpty()
-    .isLength({ min:3, max:10}),
+    .notEmpty(),
     check("email")
     .exists()
     .notEmpty()
@@ -23,19 +22,11 @@ const validatorRegisterItem = [
     }
 ];
 
-const validatorLoginItem = [
-    check("name")
-    .exists()
-    .notEmpty()
-    .isLength({ min:3, max:30}),
-    check("age")
-    .exists()
-    .notEmpty()
-    .isNumeric(),
+const validatorLogin = [
     check("password")
     .exists()
     .notEmpty()
-    .isLength({ min:3, max:10}),
+    .isLength({min:3, max:15}),
     check("email")
     .exists()
     .notEmpty()
@@ -45,5 +36,4 @@ const validatorLoginItem = [
     }
 ];
 
-
-module.exports = { validatorRegisterItem, validatorLoginItem };
+module.exports = { validatorRegister, validatorLogin};

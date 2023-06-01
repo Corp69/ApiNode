@@ -5,9 +5,10 @@ const {
     validatorGetItem,
   } = require("../validators/tracks");
 const customHeader = require("../middleware/customHeader");
-const router = express.Router();
+const authMiddleware = require("../middleware/session");
 
-router.get("/", getItems);
+const router = express.Router();
+router.get("/",  authMiddleware, getItems);
 router.get("/:id", validatorGetItem, getItem);
 router.post("/", validatorCreateItem, createItem );
 router.put("/:id", validatorGetItem, validatorCreateItem, updateItem );

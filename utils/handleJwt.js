@@ -23,4 +23,4 @@ const verifyToken = async ( tokenJwt ) => {
     }
   };
   
-  module.exports = { tokenSign, verifyToken };
+module.exports = { tokenSign, verifyToken };

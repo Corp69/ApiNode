@@ -37,7 +37,7 @@ const loginCtrl = async (req, res) => {
 
     const hashPassword = user.get('password');
 
-    const check = await compare(req.password, hashPassword)
+    const check = await compare(req.password, hashPassword);
 
     if(!check){
       handleHttpError(res, "PASSWORD_INVALID", 401);
@@ -49,11 +49,10 @@ const loginCtrl = async (req, res) => {
       token: await tokenSign(user),
       user
     }
-
-    res.send({data})
+    res.send({data});
   }catch(e){
     console.log(e);
-    handleHttpError(res, "ERROR_LOGIN_USER")
+    handleHttpError(res, "ERROR_LOGIN_USER");
   }
 }
 

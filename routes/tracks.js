@@ -7,6 +7,8 @@ const {
 const customHeader = require("../middleware/customHeader");
 const authMiddleware = require("../middleware/session");
 
+
+
 const router = express.Router();
 router.get("/",  authMiddleware, getItems);
 router.get("/:id", validatorGetItem, getItem);

@@ -1,5 +1,5 @@
 const { check } = require("express-validator");
-const validateResults = require("../utils/handleValidators")
+const validateResults = require("../utils/handleValidator")
 
 const validatorCreateItem = [
     check("name")
@@ -39,7 +39,6 @@ const validatorCreateItem = [
         return validateResults(req, res, next)
     }
 ];
-
 
 const validatorGetItem = [
     check("id")
@@ -92,6 +91,5 @@ const validatorUpdateItem = [
         return validateResults(req, res, next)
     }
 ];
-
 
 module.exports = { validatorCreateItem, validatorGetItem, validatorUpdateItem };

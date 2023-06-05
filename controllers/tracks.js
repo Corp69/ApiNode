@@ -3,14 +3,17 @@ const { tracksModel } = require("../models");
 const handleHttpError  = require("../utils/handleHttpError");
 
 const getItems = async ( req, res) => {
-    
+  try {
+    const usuario = req.user;
     const data = await tracksModel.find({});
-    res.send({data});
-
+    res.send({data, usuario});
+    
+  } catch (e) {
+   console.log( e ) 
+  }
 };
 
 const getItem  = async( req, res) => {
-
     try 
     { 
       req = matchedData( req );   
@@ -20,9 +23,6 @@ const getItem  = async( req, res) => {
     } catch (e) {
         handleHttpError( res, "ERROR_GET_ITEM")
     }
-   
-
-
 };
 const createItem = async ( req, res ) => {
     try {
@@ -53,7 +53,7 @@ const deletItem  = async ( req, res ) => {
     {
     req = matchedData( req );   
     const {id} = req;
-    const data = await tracksModel.deleteOne({_id: id});
+    const data = await tracksModel.delete({_id: id});
     res.send({ data });
     } catch (e)
     {

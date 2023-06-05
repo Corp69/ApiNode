@@ -2,10 +2,8 @@
  * @variable mongoose => 
  */
 const mongoose = require("mongoose");
+const mongooseDelete = require("mongoose-delete");
 
-/**
- *  @variable TracksScheme => 
- */
 const TracksScheme = new mongoose.Schema(
   {
     name: {
@@ -52,6 +50,7 @@ const TracksScheme = new mongoose.Schema(
   }
 );
 
-  module.exports = mongoose.model("tracks", TracksScheme);
+TracksScheme.plugin(mongooseDelete, { overrideMethods: "all"});
+module.exports = mongoose.model("tracks", TracksScheme);
 
 

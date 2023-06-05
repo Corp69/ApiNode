@@ -3,8 +3,14 @@ const { tracksModel } = require("../models");
 const handleHttpError  = require("../utils/handleHttpError");
 
 const getItems = async ( req, res) => {
+  try {
+    const usuario = req.user;
     const data = await tracksModel.find({});
-    res.send({data});
+    res.send({data, usuario});
+    
+  } catch (e) {
+   console.log( e ) 
+  }
 };
 
 const getItem  = async( req, res) => {

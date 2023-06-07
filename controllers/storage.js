@@ -11,7 +11,7 @@ const getItems = async (req, res) => {
       const data = await storageModel.find({});
       res.send({ data });
     } catch (e) {
-      handleHttpError(res, "ERROR_LIST_ITEMS");
+      handleHttpError(res, "Error Al Generar Listado");
     }
   };
 
@@ -22,7 +22,7 @@ const getItems = async (req, res) => {
       res.send({ data });
     } catch (e) {
       console.log(e)
-      handleHttpError(res, "ERROR_DETAIL_ITEMS");
+      handleHttpError(res, "Error al obtener Storage");
     }
   };
 
@@ -37,7 +37,7 @@ const getItems = async (req, res) => {
       res.status(201);
       res.send({ data });
     } catch (e) {
-      handleHttpError(res, "ERROR_DETAIL_ITEMS");
+      handleHttpError(res, "ERROR AL ALMACENAR EL STORAGE");
     }
   };
 /*
@@ -62,7 +62,7 @@ const deleteItem = async (req, res) => {
   
       res.send({ data });
     } catch (e) {
-      handleHttpError(res, "ERROR_DETAIL_ITEMS");
+      handleHttpError(res, "ERROR AL ELIMINAR EL STORAGE");
     }
   };
 

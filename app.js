@@ -3,8 +3,9 @@ const express = require ("express");
 const cors = require ("cors"); 
 const dbConnect = require ('./config/mongo'); 
 const app = express(); 
-const { Client } = require('pg');
+//const { Client } = require('pg');
 
+/*
 const connectionData = {
     user: 'postgres',
     host: 'localhost',
@@ -12,13 +13,16 @@ const connectionData = {
     password: '12345dev',
     port: 5432
 }
+*/
 
+/*
   const client = new Client(connectionData);
   client.connect();
   client.query('SELECT * FROM conf_empresa_estatus').then(response => {
           console.log(response.rows);
           client.end();
       }).catch(err => { client.end();});
+*/
 
 //const morganBody = require("morgan-body");
 //const port = 3000;

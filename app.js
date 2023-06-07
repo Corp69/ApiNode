@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require ("express"); 
 const cors = require ("cors"); 
-const dbConnect = require ('./config/mongo'); 
+const dbConnectNoSql = require ('./config/mongo'); 
+const { dbConnectMySql } = require("./config/pg");
 const app = express(); 
+
 //const { Client } = require('pg');
 
 /*
@@ -26,6 +28,9 @@ const connectionData = {
 
 //const morganBody = require("morgan-body");
 //const port = 3000;
+//const ENGINE_DB = process.env.ENGINE_DB;
+
+
 
 app.use(cors());
 app.use(express.json());
@@ -37,6 +42,8 @@ app.use("/api", require("./routes"));
 
 app.listen(port , () => {
     console.log( ` Tu app esta lista por el puerto http://localhost:${port}`);
-})
+});
 
-dbConnect();
+dbConnectMySql();
+
+//(ENGINE_DB === 'nosql') ? dbConnectNoSql() : dbConnectMySql();

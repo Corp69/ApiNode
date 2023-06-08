@@ -11,7 +11,6 @@ const registerCtrl = async (req, res) => {
     const body = { ...req, password };
     const dataUser = await userModel.create(body);
     //dataUser.set("password", undefined, { strict: false });
-  
     const data = {
       token: await tokenSign(dataUser),
       user: dataUser
@@ -19,8 +18,7 @@ const registerCtrl = async (req, res) => {
     //res.status(201)
     res.send({ data });
   }catch(e){
-    console.log(e)
-    handleHttpError(res, "ERROR_REGISTER_USER")
+    handleHttpError(res, "Error Al Registrar Al Usuario")
   }
 };
 
@@ -29,18 +27,14 @@ const loginCtrl = async (req, res) => {
     req = matchedData(req);
     const user = await userModel.findOne({email:req.email})
     .select('password name role email')
-    console.log(user);
     if(!user){
-      handleHttpError(res, "USER_NOT_EXISTS", 404);
+      handleHttpError(res, "USUARIO NO EXISTE", 404);
       return
     }
-
     const hashPassword = user.get('password');
-
     const check = await compare(req.password, hashPassword);
-
     if(!check){
-      handleHttpError(res, "PASSWORD_INVALID", 401);
+      handleHttpError(res, "PASS NO COINCIDE CON EL USUARIO", 401);
       return
     }
 
@@ -51,10 +45,8 @@ const loginCtrl = async (req, res) => {
     }
     res.send({data});
   }catch(e){
-    console.log(e);
-    handleHttpError(res, "ERROR_LOGIN_USER");
+    handleHttpError(res, "EERROR AL INICIAR SESSION.");
   }
 }
-
 
 module.exports = { registerCtrl, loginCtrl };

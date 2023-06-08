@@ -9,7 +9,7 @@ const getItems = async ( req, res) => {
     res.send({data, usuario});
     
   } catch (e) {
-   console.log( e ) 
+    handleHttpError( res, "ERROR AL MOMENTO DE GENERAR EL LISTADO");
   }
 };
 
@@ -21,7 +21,7 @@ const getItem  = async( req, res) => {
       const data = await tracksModel.findById(id);
       res.send({ data });
     } catch (e) {
-        handleHttpError( res, "ERROR_GET_ITEM")
+        handleHttpError( res, "ERROR AL BUSCAR ")
     }
 };
 const createItem = async ( req, res ) => {
@@ -31,20 +31,21 @@ const createItem = async ( req, res ) => {
         res.status(201);
         res.send({ data });
       } catch (e) {
-        handleHttpError(res, "ERROR_CREATE_ITEMS");
+        handleHttpError(res, "ERROR AL ALMACENAR");
       }
 };
 
 const updateItem = async ( req, res ) => {
     try {
-        const {id, body} = matchedData( req );
-        const data = await tracksModel.findOneAndUpdate(
-            id, body
-         );
-        //res.status( 201 );
-        res.send({ data });
+      const {id, ...body} = matchedData(req);
+      const data = await tracksModel.findByIdAndUpdate(
+        id, body
+      );
+      res.status(200);
+      res.send({ "Response": " Actualizado Correctamente" });
       } catch (e) {
-        handleHttpError(res, "ERROR_UPDATE_ITEM");
+        console.log( e );
+        handleHttpError(res, "ERROR AL ACTUALIZAR");
       }
 };
 
@@ -53,12 +54,14 @@ const deletItem  = async ( req, res ) => {
     {
     req = matchedData( req );   
     const {id} = req;
-    const data = await tracksModel.delete({_id: id});
-    res.send({ data });
+    //const data = await tracksModel.delete({_id: id});
+    const data = await tracksModel.findByIdAndDelete({_id: id});
+    res.status(200);
+    res.send({ "Response": "Se elimino Correctamente " });
     } catch (e)
     {
         console.log(e);
-        handleHttpError( res, "ERROR_DELETE_ITEM");
+        handleHttpError( res, "ERROR AL ELIMINAR");
     }    
 };
 

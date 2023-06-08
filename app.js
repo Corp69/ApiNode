@@ -30,7 +30,8 @@ const connectionData = {
 //const port = 3000;
 //const ENGINE_DB = process.env.ENGINE_DB;
 
-
+const ENGINE_DB = process.env.ENGINE_DB;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 app.use(cors());
 app.use(express.json());
@@ -44,6 +45,5 @@ app.listen(port , () => {
     console.log( ` Tu app esta lista por el puerto http://localhost:${port}`);
 });
 
-dbConnectMySql();
-
-//(ENGINE_DB === 'nosql') ? dbConnectNoSql() : dbConnectMySql();
+//? EVALUAMOS EL MOTOR 
+(ENGINE_DB === 'nosql') ? dbConnectNoSql() : dbConnectMySql();

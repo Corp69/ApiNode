@@ -15,7 +15,9 @@ const dbConnect = async () => {
       useUnifiedTopology: true,
     });
 
-    console.log("***************** conexion exitosa ");
+    console.log("****************************");
+    console.info("      MONGODB ESTA ACTIVO   ");
+    console.log("****************************");
 
   }
   catch (error) {

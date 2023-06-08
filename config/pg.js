@@ -14,15 +14,12 @@ const sequelize = new Sequelize(database, username, password, {
 const dbConnectMySql = async () => {
   try {
     await sequelize.authenticate();
-    console.log(" POSGRESQL Conexión correcta");
-    
-    
-
-
-
+    console.log("****************************");
+    console.info(" postgresql ACTIVO   ");
+    console.log("****************************");
 
   } catch (e) {
-    console.log(" POSGRESQL Error de Conexión", e);
+    console.log(" postgresql Error de Conexión", e);
   }
 };
 

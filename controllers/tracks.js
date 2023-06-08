@@ -37,13 +37,14 @@ const createItem = async ( req, res ) => {
 
 const updateItem = async ( req, res ) => {
     try {
-        const {id, body} = matchedData( req );
-        const data = await tracksModel.findOneAndUpdate(
-            id, body
-         );
-        //res.status( 201 );
-        res.send({ data });
+      const {id, ...body} = matchedData(req);
+      const data = await tracksModel.findByIdAndUpdate(
+        id, body
+      );
+      res.status(200);
+      res.send({ "Response": " Actualizado Correctamente" });
       } catch (e) {
+        console.log( e );
         handleHttpError(res, "ERROR AL ACTUALIZAR");
       }
 };
@@ -53,8 +54,10 @@ const deletItem  = async ( req, res ) => {
     {
     req = matchedData( req );   
     const {id} = req;
-    const data = await tracksModel.delete({_id: id});
-    res.send({ data });
+    //const data = await tracksModel.delete({_id: id});
+    const data = await tracksModel.findByIdAndDelete({_id: id});
+    res.status(200);
+    res.send({ "Response": "Se elimino Correctamente " });
     } catch (e)
     {
         console.log(e);

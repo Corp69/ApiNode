@@ -24,9 +24,6 @@ const authMiddleware = async ( req, res, next ) => {
         const query = {
             [propertiesKey.id]:dataToken[propertiesKey.id]
           }
-
-          console.log( 'valores del query ===> ID ', query);
-
         // sacamos el usuario.
         const user = await userModel.findOne(query)
         req.user = user

@@ -35,5 +35,18 @@ const dbConnectPg4 = async (Tablapg) => {
     client.end();
   }
 };
+
+const listTabla = async (Tablapg) => {
+  const client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    const query = `SELECT * FROM ${Tablapg}`;
+    const response = await client.query(query);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
 //!===================================================================================================================================    
-module.exports = dbConnectPg4;
+module.exports = { dbConnectPg4, listTabla } ;

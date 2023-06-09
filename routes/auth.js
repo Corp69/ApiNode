@@ -5,8 +5,7 @@ const { validatorRegister, validatorLogin } = require("../validators/auth");
 const router = express.Router();
 router.post("/register", validatorRegister, registerCtrl);
 router.post("/login", validatorLogin, loginCtrl);
-
 router.post("/Registrar", validatorRegister, RegistrarCtrl);
-router.post("/entrar", validatorLogin, EntrarCtrl);
+router.get("/entrar", EntrarCtrl);
 
 module.exports = router;

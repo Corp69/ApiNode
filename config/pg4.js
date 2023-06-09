@@ -36,17 +36,20 @@ const dbConnectPg4 = async (Tablapg) => {
   }
 };
 
-const listTabla = async (Tablapg) => {
+const lstTable = async (Tablapg) => {
   const client = new Pool(poolConfig);
   try {
     await client.connect();
     const query = `SELECT * FROM ${Tablapg}`;
     const response = await client.query(query);
+    return response.rows;
   } catch (err) {
     console.error(err);
   } finally {
+    console.log("cerrada la conexion");
     client.end();
   }
 };
+
 //!===================================================================================================================================    
-module.exports = { dbConnectPg4, listTabla } ;
+module.exports =  {dbConnectPg4, lstTable};

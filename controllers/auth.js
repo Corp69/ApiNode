@@ -3,6 +3,9 @@ const { encrypt, compare } = require("../utils/handlePassword");
 const { tokenSign } = require("../utils/handleJwt");
 const { handleHttpError }  = require("../utils/handleHttpError");
 const { userModel } = require("../models");
+const { lstTable } = require ('../config/pg4'); 
+  
+
 
 const registerCtrl = async (req, res) => {
   try{
@@ -68,30 +71,15 @@ const loginCtrl = async (req, res) => {
 }
 
 const EntrarCtrl = async (req, res) => {
-  try{
-    req = matchedData(req);
-    const user = await userModel.findOne({email:req.email})
-    .select('password name role email')
-    if(!user){
-      handleHttpError(res, "USUARIO NO EXISTE", 404);
-      return
-    }
-    const hashPassword = user.get('password');
-    const check = await compare(req.password, hashPassword);
-    if(!check){
-      handleHttpError(res, "PASS NO COINCIDE CON EL USUARIO", 401);
-      return
-    }
+  let lsTusuario = await lstTable("users");
+  console.log('usuarios desde controller ===> ', lsTusuario );
+  res.send({ 
+    "Ttitulo:":"listado usuarios", 
+    "Mensaje":"la consulta de manera exitosa !", 
+    "Detalle": 
+    lsTusuario 
+  });
 
-    user.set('password', undefined, {strict:false})
-    const data = {
-      token: await tokenSign(user),
-      user
-    }
-    res.send({data});
-  }catch(e){
-    handleHttpError(res, "EERROR AL INICIAR SESSION.");
-  }
 }
 
 

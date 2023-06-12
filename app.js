@@ -18,5 +18,9 @@ app.listen(port , () => {
 });
 //?==========================================================================================================================================================================================
 //? ********* CONEXION: METODOS Y MAS ************************************** 
-//const { lstTable } = require ('./config/pg4'); 
-//lstTable("users")
+//const { accesoBD } = require ('./config/pg4');
+//let usuario ="eli"; 
+//let passs ="123"; 
+//accesoBD( usuario , passs );
+
+

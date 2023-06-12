@@ -51,5 +51,21 @@ const lstTable = async (Tablapg) => {
   }
 };
 
+const accesoBD = async (_user, _pass) => {
+  const client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    const query = `SELECT rh.rh_empleado_login('${_user.toString()}','${_pass.toString()}')`;
+    const response = await client.query(query);
+    console.log('Acceso a la base para ===> ',response.rows[0].rh_empleado_login);
+    return response.rows;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    console.log("cerrada la conexion");
+    client.end();
+  }
+};
+
 //!===================================================================================================================================    
-module.exports =  {dbConnectPg4, lstTable};
+module.exports =  {dbConnectPg4, lstTable, accesoBD};

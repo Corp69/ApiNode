@@ -3,7 +3,7 @@ const { encrypt, compare } = require("../utils/handlePassword");
 const { tokenSign } = require("../utils/handleJwt");
 const { handleHttpError }  = require("../utils/handleHttpError");
 const { userModel } = require("../models");
-const { lstTable } = require ('../config/pg4'); 
+const { accesoBD } = require ('../config/pg4'); 
   
 
 
@@ -43,6 +43,8 @@ const RegistrarCtrl = async (req, res) => {
   }
 };
 
+
+/*
 const loginCtrl = async (req, res) => {
   try{
     req = matchedData(req);
@@ -69,18 +71,90 @@ const loginCtrl = async (req, res) => {
     handleHttpError(res, "EERROR AL INICIAR SESSION.");
   }
 }
+*/
 
-const EntrarCtrl = async (req, res) => {
-  let lsTusuario = await lstTable("users");
-  console.log('usuarios desde controller ===> ', lsTusuario );
+const loginCtrl = async (req, res) => {
+ switch(req.body.USUARIO){
+  case undefined:
+      // EN CASO DE CONTRASEÑA INDEFINIDA
+      res.send({ 
+        "Ttitulo:":"Inicio Sesion", 
+        "Mensaje":"la consulta de manera exitosa !", 
+        "Detalle":" El usuario esta indefinido."
+      });
+  break;
+  case '':
+      // EN CASO DE CONTRASEÑA INDEFINIDA
+      res.send({ 
+        "Ttitulo:":"Inicio Sesion", 
+        "Mensaje":"la consulta de manera exitosa !", 
+        "Detalle":" El usuario esta Vacio."
+      });
+  break;
+  default:
+  switch(req.body.PASSS) {
+    case undefined:
+      // EN CASO DE CONTRASEÑA INDEFINIDA
+      res.send({ 
+        "Ttitulo:":"Inicio De Session", 
+        "Mensaje":"Consulta de manera exitosa !", 
+        "Detalle":"No la Passs esta Indefinida "
+      });
+      break;
+    case '':
+      // EN CASO DE CONTRASEÑA VACIA
+       res.send({ 
+        "Ttitulo:":"Inicio De Session", 
+        "Mensaje":"Consulta de manera exitosa !", 
+        "Detalle":"No la Passs esta Vacia"
+      });
+      break;
+    default:
+      // FINAL MENTE SI LA CONTRASEÑA COINCIDE EN ALGO.
+      let AccesoUsuario = await accesoBD(req.body.USUARIO.toString(),req.body.PASSS.toString());
+    if(AccesoUsuario[0].rh_empleado_login == null){
+      res.send({ 
+        "Ttitulo:":"Inicio De Session", 
+        "Mensaje":"Consulta de manera exitosa !", 
+        "Detalle":"No existe el Uusario en la base de datos"
+      });
+      return;
+    }
+    else{
+      let user = {
+         id: AccesoUsuario[0].rh_empleado_login.id, 
+         usuario: AccesoUsuario[0].rh_empleado_login.usuario,
+         role:'admin'
+        }
+
+      let data = {
+        token: await tokenSign(user),
+        user
+      }
+      //Respondemos una vez el usurio exista.
+      res.send({
+        "titulo":"Incio De Session",
+        "Mesnsaje":"Consulta correcta !", 
+        data
+      });
+    }
+  }
+ 
+}
+
+
+
+}
+
+const Tokkenverify = async (req, res) => {
+
   res.send({ 
-    "Ttitulo:":"listado usuarios", 
-    "Mensaje":"la consulta de manera exitosa !", 
-    "Detalle": 
-    lsTusuario 
+    "Ttitulo:":"Test", 
+    "Mensaje":"validando el tokken verifiry !", 
+    "Detalle": "tokken validado"
   });
 
 }
 
 
-module.exports = { registerCtrl, loginCtrl, RegistrarCtrl, EntrarCtrl };
+module.exports = { registerCtrl,  RegistrarCtrl,loginCtrl,Tokkenverify  };

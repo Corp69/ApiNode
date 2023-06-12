@@ -1,11 +1,11 @@
 const express = require("express");
-const { registerCtrl, loginCtrl, RegistrarCtrl, EntrarCtrl } = require("../controllers/auth");
-const { validatorRegister, validatorLogin } = require("../validators/auth");
+const { registerCtrl, loginCtrl } = require("../controllers/auth");
+//const { validatorRegister, validatorLogin } = require("../validators/auth");
+//const customHeader = require("../middleware/customHeader");
 
 const router = express.Router();
-router.post("/register", validatorRegister, registerCtrl);
-router.post("/login", validatorLogin, loginCtrl);
-router.post("/Registrar", validatorRegister, RegistrarCtrl);
-router.get("/entrar", EntrarCtrl);
+router.post("/register", registerCtrl);
+router.post("/login", loginCtrl);
+
 
 module.exports = router;

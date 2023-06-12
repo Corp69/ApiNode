@@ -7,7 +7,7 @@ const ENGINE_PG4password = process.env.PG4password;
 const ENGINE_PG4port = process.env.PG4port;
 //=========================================================================================================================================================================================================================
 //? ====> Cliente O libreria de conexion Pg4
-const { Client } = require('pg');
+//const { Client } = require('pg');
 const { Pool } = require('pg');
 
 //=========================================================================================================================================================================================================================
@@ -22,12 +22,13 @@ const poolConfig = {
   max: 3, // Limitar el pool a 3 conexiones
 };
 //=========================================================================================================================================================================================================================
+/*
 const dbConnectPg4 = async (Tablapg) => {
-  const client = new Pool(poolConfig);
+  let client = new Pool(poolConfig);
   try {
     await client.connect();
-    const query = `SELECT * FROM ${Tablapg}`;
-    const response = await client.query(query);
+    let query = `SELECT * FROM ${Tablapg}`;
+    let response = await client.query(query);
     console.log(response.rows);
   } catch (err) {
     console.error(err);
@@ -35,37 +36,47 @@ const dbConnectPg4 = async (Tablapg) => {
     client.end();
   }
 };
-
+*/
 const lstTable = async (Tablapg) => {
-  const client = new Pool(poolConfig);
+  let client = new Pool(poolConfig);
   try {
     await client.connect();
-    const query = `SELECT * FROM ${Tablapg}`;
-    const response = await client.query(query);
+    let query = `SELECT * FROM ${Tablapg}`;
+    let response = await client.query(query);
     return response.rows;
   } catch (err) {
     console.error(err);
   } finally {
-    console.log("cerrada la conexion");
     client.end();
   }
 };
 
 const accesoBD = async (_user, _pass) => {
-  const client = new Pool(poolConfig);
+  let client = new Pool(poolConfig);
   try {
     await client.connect();
-    const query = `SELECT rh.rh_empleado_login('${_user.toString()}','${_pass.toString()}')`;
-    const response = await client.query(query);
-    console.log('Acceso a la base para ===> ',response.rows[0].rh_empleado_login);
+    let query = `SELECT rh.rh_empleado_login('${_user.toString()}','${_pass.toString()}')`;
+    let response = await client.query(query);
     return response.rows;
   } catch (err) {
     console.error(err);
   } finally {
-    console.log("cerrada la conexion");
     client.end();
   }
 };
 
+const Qtabla = async (_tabla) => {
+  let client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    let query = `SELECT * from ${_tabla.toString()}`;
+    let response = await client.query(query);
+    return response.rows;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
 //!===================================================================================================================================    
-module.exports =  {dbConnectPg4, lstTable, accesoBD};
+module.exports =  { lstTable, accesoBD, Qtabla};

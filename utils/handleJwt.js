@@ -2,7 +2,7 @@ const jtw = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const tokenSign = async (user) => {
-  const sign = await jtw.sign(
+  let sign = await jtw.sign(
     { id: user.id, usuario: user.usuario, role:'admin'},
     JWT_SECRET, 
     {
@@ -14,7 +14,6 @@ const tokenSign = async (user) => {
 
 const verifyToken = async ( tokenJwt ) => {
     try {
-      console.log('Valor del Tokken verificado',jtw.verify(tokenJwt, JWT_SECRET));
       return jtw.verify(tokenJwt, JWT_SECRET);
     } catch (e) {
       return null;

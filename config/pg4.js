@@ -78,5 +78,85 @@ const Qtabla = async (_tabla) => {
     client.end();
   }
 };
+
+const QTbBuscarId = async (_tabla, _id_) => {
+  let client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    let query = `SELECT * from ${_tabla.toString()} where id =${_id_}`;
+    let response = await client.query(query);
+    return response.rows;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
+
+const QAlmacenarActualizar = async (_tabla, _jsonBody_) => {
+  let client = new Pool(poolConfig);
+  let response = null;
+  let body = _jsonBody_;
+  try {
+    await client.connect();
+    if (_jsonBody_.id < 0) {
+      delete body.id;
+      let resTablaCampos = Object.keys(body);
+      let valores = Object.values(body).map(parsearValor);
+      let SQLqueryInsert = `INSERT INTO public.${_tabla} (id,${resTablaCampos.join(', ')}) VALUES ((select max(id) + 1 from ${_tabla}),${valores})`;
+      response = await client.query(SQLqueryInsert);
+    } else {    
+      let resTablaCampos = Object.keys(body);
+      let valores = Object.values(body).map(parsearValor);
+      let sets = resTablaCampos.map((campo, index) => `${campo} = ${valores[index]}`).join(', ');
+      let where = `${resTablaCampos[0]} = ${valores[0]}`;
+      let SQLqueryUpdate = `UPDATE ${_tabla} SET ${sets} WHERE ${where}`;
+      response = await client.query(SQLqueryUpdate);
+    }
+    return response;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
+
+const QMaxID = async (Tablapg) => {
+  let client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    let query = `SELECT max(id) id FROM ${Tablapg}`;
+    let response = await client.query(query);
+    return response.rows;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
+
+
+
+parsearValor = (valor) => {
+  if (valor === null || valor === undefined) {
+    let fieldfinal = null;
+    return `${fieldfinal}`
+  } else if (/^\d+(\.\d+)?$/.test(valor)) {
+    return parseFloat(valor);
+  } else {
+    let fieldfinal;
+    let texto = valor.toString();
+    if (texto == 'default') {
+      fieldfinal = `${texto}`;
+    }
+    else {
+      fieldfinal = `'${texto}'`;
+    }
+    return `${fieldfinal}`;
+  }
+}
+
+
+
 //!===================================================================================================================================    
-module.exports =  { lstTable, accesoBD, Qtabla};
+module.exports = { lstTable, accesoBD, Qtabla, QTbBuscarId, QAlmacenarActualizar, QMaxID };

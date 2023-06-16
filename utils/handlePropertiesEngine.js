@@ -8,7 +8,6 @@ const getProperties = () => {
             id:'id'
         }
     }
-    console.log('Propiedades del ENGINE ==> ',data[ENGINE_DB]);
     return data[ENGINE_DB]
 }
 

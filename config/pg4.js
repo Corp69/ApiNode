@@ -79,12 +79,13 @@ const Qtabla = async (_tabla) => {
   }
 };
 
-const QTbBuscarId = async (_tabla, _id_) => {
+const QTbBuscarId = async (Tablapg, _id_) => {
   let client = new Pool(poolConfig);
   try {
     await client.connect();
-    let query = `SELECT * from ${_tabla.toString()} where id =${_id_}`;
+    let query = `SELECT * from ${Tablapg} where id =${_id_}`;
     let response = await client.query(query);
+    console.log(response)
     return response.rows;
   } catch (err) {
     console.error(err);
@@ -135,6 +136,37 @@ const QMaxID = async (Tablapg) => {
   }
 };
 
+const QPgValidaTabla = async (Tablapg) => {
+  let client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    let query = `select "Cliente".Buscar_Tabla('${Tablapg}') tabla`;
+    let response = await client.query(query);
+    return response.rows[0].tabla.id;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
+
+
+const QTBEliminar = async (_Tablapg_, _ids_) => {
+  let client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    let query = `delete from ${_Tablapg_} where id in (${_ids_.join(', ')})`;
+    let response = await client.query(query);
+    return { id: 1, "Eliminaciones": response};
+  } catch (err) {
+    console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.error(err);
+    console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    return { id: 0, "error": err.detail } ;
+  } finally {
+    client.end();
+  }
+};
 
 
 parsearValor = (valor) => {
@@ -159,4 +191,4 @@ parsearValor = (valor) => {
 
 
 //!===================================================================================================================================    
-module.exports = { lstTable, accesoBD, Qtabla, QTbBuscarId, QAlmacenarActualizar, QMaxID };
+module.exports = { lstTable, accesoBD, Qtabla, QTbBuscarId, QAlmacenarActualizar, QMaxID, QTBEliminar,QPgValidaTabla };

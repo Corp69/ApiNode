@@ -1,14 +1,16 @@
 const express = require("express");
-const { TbClientes, AlmacenarCliente } = require("../controllers/ventas/clientes");
+const { TbClientes, AlmacenarCliente,EliminarCliente } = require("../controllers/ventas/clientes");
 const authMiddleware = require("../middleware/session");
 
 
 const router = express.Router();
-router.get("/",    authMiddleware, TbClientes);
-router.get("/:id", authMiddleware, TbClientes);
+router.post("/",    authMiddleware, TbClientes);
+router.post("/:id", authMiddleware, TbClientes);
 router.post("/", authMiddleware, AlmacenarCliente);
+router.post("/eliminar", authMiddleware, EliminarCliente);
 //router.put("/:id", authMiddleware, validatorGetItem, validatorCreateItem, updateItem );
 //router.delete("/:id", authMiddleware, validatorGetItem, deletItem );
+
 
 
 

@@ -1,9 +1,10 @@
 const express = require("express");
-const { TbClientes, AlmacenarCliente,EliminarCliente } = require("../controllers/ventas/clientes");
+const { lstTbClientes,TbClientes, AlmacenarCliente,EliminarCliente } = require("../controllers/ventas/clientes");
 const authMiddleware = require("../middleware/session");
 
 
 const router = express.Router();
+router.post("/",    authMiddleware, lstTbClientes);
 router.post("/",    authMiddleware, TbClientes);
 router.post("/:id", authMiddleware, TbClientes);
 router.post("/", authMiddleware, AlmacenarCliente);

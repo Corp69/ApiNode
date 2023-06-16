@@ -37,11 +37,11 @@ const dbConnectPg4 = async (Tablapg) => {
   }
 };
 */
-const lstTable = async (Tablapg) => {
+const QlstTable = async (Tablapg) => {
   let client = new Pool(poolConfig);
   try {
     await client.connect();
-    let query = `SELECT * FROM ${Tablapg}`;
+    let query = `SELECT id, descripcion FROM ${Tablapg}`;
     let response = await client.query(query);
     return response.rows;
   } catch (err) {
@@ -191,4 +191,4 @@ parsearValor = (valor) => {
 
 
 //!===================================================================================================================================    
-module.exports = { lstTable, accesoBD, Qtabla, QTbBuscarId, QAlmacenarActualizar, QMaxID, QTBEliminar,QPgValidaTabla };
+module.exports = { QlstTable, accesoBD, Qtabla, QTbBuscarId, QAlmacenarActualizar, QMaxID, QTBEliminar,QPgValidaTabla };

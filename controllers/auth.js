@@ -81,18 +81,12 @@ const tokken = async (req, res) => {
      let dataToken = await verifyToken(req.body.tokken);
      switch (dataToken) {
          case null:
-          res.send({
-            "Mensaje": "Tokken Expiro !",
-            "Estatus": false
-          });
+          res.send(false);
              return;    
          break;
          default:
              req.user = dataToken;
-             res.send({
-              "Mensaje": "Tokken activo !",
-              "Estatus": true
-            });
+             res.send(true);
          break;
      }
 }

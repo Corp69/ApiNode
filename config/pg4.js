@@ -37,11 +37,11 @@ const dbConnectPg4 = async (Tablapg) => {
   }
 };
 */
-const lstTable = async (Tablapg) => {
+const QlstTable = async (Tablapg) => {
   let client = new Pool(poolConfig);
   try {
     await client.connect();
-    let query = `SELECT * FROM ${Tablapg}`;
+    let query = `SELECT id, descripcion FROM ${Tablapg}`;
     let response = await client.query(query);
     return response.rows;
   } catch (err) {
@@ -150,6 +150,19 @@ const QPgValidaTabla = async (Tablapg) => {
   }
 };
 
+const Vschema = async (Tablapg) => {
+  let client = new Pool(poolConfig);
+  try {
+    await client.connect();
+    let query = `SELECT 1 id, schema_name FROM information_schema.schemata where schema_name ='${Tablapg}'`;
+    let response = await client.query(query);
+    return response.rows[0];
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
 
 const QTBEliminar = async (_Tablapg_, _ids_) => {
   let client = new Pool(poolConfig);
@@ -168,7 +181,32 @@ const QTBEliminar = async (_Tablapg_, _ids_) => {
   }
 };
 
+//=====================================================================================================================================
+//Ejecucion de esquemas
+const QEschema = async (schema, _function, _jsonBody_) => {
+  let client = new Pool(poolConfig);
+  let response = null;
+  let body = _jsonBody_;
+  try {
+    await client.connect();
+      //let resTablaCampos = Object.keys(body);
+      let valores = Object.values(body).map(parsearValor);
+      let EXCSchema = `select "${schema}".${_function}(${valores.join(', ')})`;
+      response = await client.query(EXCSchema);
+      console.log(response);
+    return response;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.end();
+  }
+};
 
+
+
+
+
+//=====================================================================================================================================
 parsearValor = (valor) => {
   if (valor === null || valor === undefined) {
     let fieldfinal = null;
@@ -191,4 +229,4 @@ parsearValor = (valor) => {
 
 
 //!===================================================================================================================================    
-module.exports = { lstTable, accesoBD, Qtabla, QTbBuscarId, QAlmacenarActualizar, QMaxID, QTBEliminar,QPgValidaTabla };
+module.exports = { QlstTable, accesoBD, Qtabla, QTbBuscarId, QAlmacenarActualizar, QMaxID, QTBEliminar, QPgValidaTabla, Vschema, QEschema };

@@ -4,8 +4,42 @@ const {
   QAlmacenarActualizar,
   QMaxID,
   QTBEliminar,
-  QPgValidaTabla
+  QPgValidaTabla,
+  QlstTable,
+  Vschema,
+  QEschema
 } = require('../../config/pg4');
+
+const lstTbClientes = async (req, res) => {
+  let QtablaPg = await QPgValidaTabla(req.body.Qtabla.toString());
+  if (QtablaPg > 0) {
+    if (req.params.id > 0) {
+      let QBusqueda = await QlstTable(req.body.Qtabla.toString(), req.params.id);
+      res.status(200);
+      res.send({
+        "Ttitulo:": `Modulo Cliente: ${req.body.Qtabla.toString()}`,
+        "Mensaje": "la consulta de manera exitosa !",
+        "Detalle": QBusqueda
+      });
+    }
+    else {
+      let tablaempresa = await Qtabla(req.body.Qtabla.toString());
+      res.status(200);
+      res.send({
+        "Ttitulo:": `Modulo Cliente: ${req.body.Qtabla.toString()}`,
+        "Mensaje": "la consulta de manera exitosa !",
+        "Detalle": tablaempresa
+      });
+    }
+  }
+  else {
+    res.status(200);
+    res.send({
+      "Ttitulo:": `Modulo: Cliente`,
+      "Mensaje": `Error tu Tabla No Existe, verificar Nombre: ${req.body.Qtabla.toString()}`
+    });
+  }
+};
 
 const TbClientes = async (req, res) => {
   let QtablaPg = await QPgValidaTabla(req.body.Qtabla.toString());
@@ -117,7 +151,42 @@ const EliminarCliente = async (req, res) => {
     });
   }
 };
+//=========================================================================================
+// Schemas
+const Schemas = async (req, res) => {
+  let ValidaSchemas = await Vschema(req.body.ExSchema.toString());
+ switch (ValidaSchemas) {
+  case undefined:
+    res.send({
+      "Ttitulo:": `Modulo Cliente: No encontro Schema `,
+      "Mensaje": "la consulta de manera exitosa !",
+      "Detalle": "El exchema no existe"
+    });        
+    break;
+  default:
 
+  let ResEchema = await QEschema
+  (
+      req.body.ExSchema.toString(),
+      req.body.funcion.toString(),
+      req.body.data
+  );
+  console.log(ResEchema);
+
+  res.send({
+    "Ttitulo:": `Modulo Cliente: No encontro Schema `,
+    "Mensaje": "la consulta de manera exitosa !",
+    "Detalle": ""
+  });   
+
+    break;
+ }
+
+
+
+};
+
+//=========================================================================================
 
 function RCaracteres(cadena) {
   // Expresión regular para buscar caracteres especiales y espacios
@@ -127,4 +196,4 @@ function RCaracteres(cadena) {
   return nuevaCadena.trim();
 }
 
-module.exports = { TbClientes, AlmacenarCliente, EliminarCliente };
+module.exports = { TbClientes, AlmacenarCliente, EliminarCliente, lstTbClientes, Schemas };

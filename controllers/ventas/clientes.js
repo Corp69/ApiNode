@@ -5,7 +5,9 @@ const {
   QMaxID,
   QTBEliminar,
   QPgValidaTabla,
-  QlstTable
+  QlstTable,
+  Vschema,
+  QEschema
 } = require('../../config/pg4');
 
 const lstTbClientes = async (req, res) => {
@@ -149,7 +151,42 @@ const EliminarCliente = async (req, res) => {
     });
   }
 };
+//=========================================================================================
+// Schemas
+const Schemas = async (req, res) => {
+  let ValidaSchemas = await Vschema(req.body.ExSchema.toString());
+ switch (ValidaSchemas) {
+  case undefined:
+    res.send({
+      "Ttitulo:": `Modulo Cliente: No encontro Schema `,
+      "Mensaje": "la consulta de manera exitosa !",
+      "Detalle": "El exchema no existe"
+    });        
+    break;
+  default:
 
+  let ResEchema = await QEschema
+  (
+      req.body.ExSchema.toString(),
+      req.body.funcion.toString(),
+      req.body.data
+  );
+  console.log(ResEchema);
+
+  res.send({
+    "Ttitulo:": `Modulo Cliente: No encontro Schema `,
+    "Mensaje": "la consulta de manera exitosa !",
+    "Detalle": ""
+  });   
+
+    break;
+ }
+
+
+
+};
+
+//=========================================================================================
 
 function RCaracteres(cadena) {
   // Expresión regular para buscar caracteres especiales y espacios
@@ -159,4 +196,4 @@ function RCaracteres(cadena) {
   return nuevaCadena.trim();
 }
 
-module.exports = { TbClientes, AlmacenarCliente, EliminarCliente, lstTbClientes };
+module.exports = { TbClientes, AlmacenarCliente, EliminarCliente, lstTbClientes, Schemas };
